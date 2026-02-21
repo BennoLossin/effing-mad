@@ -33,7 +33,6 @@
 //! and the `futurise` function will take your futures and your computations and abstract away all
 //! the other nonsense in that module to get you the respective constructs.
 
-#![feature(doc_auto_cfg)]
 #![feature(doc_notable_trait)]
 #![feature(coroutines)]
 #![feature(coroutine_trait)]
@@ -72,7 +71,7 @@ pub enum Never {}
 ///
 /// Effectful computations are coroutines, but if they have no effects, it is guaranteed that they
 /// will never yield. Therefore they can be run by resuming them once. This function does that.
-pub fn run<F, R>(mut f: F) -> R
+pub fn run<F, R>(f: F) -> R
 where
     F: Coroutine<Coproduct<Begin, CNil>, Yield = CNil, Return = R>,
 {
@@ -271,7 +270,7 @@ where
 ///
 /// For more flexible interactions with Futures, see [`effects::future`].
 pub async fn handle_group_async<G, Fut, Es, Is, BeginIndex>(
-    mut g: G,
+    g: G,
     mut handler: impl FnMut(Es) -> Fut,
 ) -> G::Return
 where
